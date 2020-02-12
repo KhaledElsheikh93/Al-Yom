@@ -1,3 +1,14 @@
+<?php 
+
+if(isset($_POST['show']))
+{
+    include "database.php";
+    
+    $from_date = $_POST['From'];
+    $to_date = $_POST['To'];
+
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,31 +23,28 @@
 </head>
 <body>
     <div class="container">
-        
-
         <div class="row text-center py-5">
-            <a class="btn btn-primary" href="Person/create_person.php">Add Person</a>
-            <a class="btn btn-primary" style="margin-left: 10px;" href="Family/create_family.php">Add Family</a>
-            <a class="btn btn-primary" style="margin-left: 10px;" href="search_date.php">Searching by date</a>
+        <a class="btn btn-primary" style="margin-left: 10px;" href="index.php">Back</a>
+   
             <table id="t01">
                 <tr>
                     <th>name</th>
                     <th>Date of birth</th>
                     <th>control</th>
                 </tr>
-                <?php
-                include "database.php";
-                $select_person = "SELECT * FROM person";
-                $results = $conn->query($select_person);
-                foreach($results as $result){
+                <?php 
+                    $select_person = "SELECT * FROM person WHERE birthdate BETWEEN '" .$from_date. "' AND '" .$to_date. "'";
+                    $persons = $conn->query($select_person);
+                    foreach($persons as $person){ ?>
 
-               ?> 
+               
                 <tr>
-                    <td><?php echo $result['name']; ?></td>
-                    <td><?php echo $result['birthdate']; ?></td>
-                    <td><a class="btn btn-primary" href="Person/details.php?id=<?php echo $result['id'];?>">Details</a></td>
+                    <td><?php echo $person['name']; ?></td>
+                    <td><?php echo $person['birthdate']; ?></td>
+                    <td><a class="btn btn-primary" href="Person/details.php?id=<?php echo $person['id'];?>">Details</a></td>
                 </tr>
-                <?php } ?>
+                <?php }} ?> 
+                
             </table>
                 
         </div>
